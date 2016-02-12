@@ -18,7 +18,8 @@
   
 <!--    <a id="military-status-info-test" rel="leanModal" name="status" href="#militaryStatus" class="svg-info-icons">Info Icon</a>-->
 
-  <select id="military-status" name="military_status" alt="Select military status" class="filter-item">
+  <select id="military-status" name="military_status" 
+    alt="Select military status" class="filter-item dynamic-changer">
     <% { 
       'veteran' => 'Veteran', 'active duty' => 'Active Duty', 
       'national guard / reserves' => 'National Guard / Reserves',
@@ -37,7 +38,8 @@
     <label for="spouse-active-duty">Is your spouse on active duty?</label>
   <% end %>
   
-  <select id="spouse-active-duty" name="spouse_active_duty" alt="Spouse Active Duty? Yes/No" class="filter-item">
+  <select id="spouse-active-duty" name="spouse_active_duty" 
+    alt="Spouse Active Duty? Yes/No" class="filter-item dynamic-changer">
     <% { 
       'yes' => 'Spouse Active Duty', 'no' => 'Spouse Not Active Duty'
     }.each_pair do |value, label| %>
@@ -54,7 +56,9 @@
     <label for="gi-bill-chapter">Which GI Bill benefit are you thinking of using?   <a id="go" rel="leanModal" name="training" href="#training" class="info-icons"><i id="gi-bill-chapter-info" class="fa fa-info-circle info-icons"></i> </a>
     </label>
   <% end %>
-  <select id="gi-bill-chapter" name="gi_bill_chapter" alt="Select which GI Bill benefit you are thinking of using" class="filter-item">
+  <select id="gi-bill-chapter" name="gi_bill_chapter" 
+    alt="Select which GI Bill benefit you are thinking of using" 
+    class="filter-item dynamic-changer">
     <% { 
       '33' => 'Post-9/11 GI Bill (Ch 33)', '30' => 'Montgomery GI Bill (Ch 30)', 
       '1606' => 'Select Reserve GI Bill (Ch 1606)', '1607' => 'REAP GI Bill (Ch 1607)',
@@ -74,7 +78,9 @@
     <label for="cumulative-service">Cumulative Post 9-11 Active Duty Service:<a id="go" rel="leanModal" name="service" href="#activeService" class="info-icons"><i id="cumulative-service-info" class="fa fa-info-circle info-icons"></i></a></label>
   <% end %>
 
-  <select id="cumulative-service" name="cumulative_service" alt="Select amount of cumulative Post 9-11 Active Duty Service" class="filter-item">
+  <select id="cumulative-service" name="cumulative_service" 
+    alt="Select amount of cumulative Post 9-11 Active Duty Service" 
+    class="filter-item dynamic-changer">
     <% { 
       '1.0' => '36+ months: 100% (includes BASIC)', '0.9' => '30 months: 90% (includes BASIC)', 
       '0.8' => '24 months: 80% (includes BASIC)', '0.7' => '18 months: 70% (excludes BASIC)',
@@ -95,7 +101,8 @@
     <label for="enlistment-service">Completed an enlistment of:<a id="go" rel="leanModal" name="service" href="#montbill"  class="info-icons"><i id="enlistment-service-info" class="fa fa-info-circle info-icons"></i></a> </label>
   <% end %>
 
-  <select id="enlistment-service" name="enlistment_service" alt="Select length of your enlistment" class="filter-item">
+  <select id="enlistment-service" name="enlistment_service" 
+    alt="Select length of your enlistment" class="filter-item dynamic-changer">
     <% { 
       '3' => '3 or more years', '2' => '2 or more years'
     }.each_pair do |value, label| %>
@@ -114,7 +121,9 @@
     <label for="consecutive-service">Length of Longest Active Duty Tour:<a id="go" rel="leanModal" name="service" href="#reap" class="info-icons"><i id="longest-active-duty-tour-info" class="fa fa-info-circle info-icons"></i></a></label>
   <% end %>
 
-  <select id="consecutive-service" name="consecutive_service" alt="Select the length of your longest actice duty tour" class="filter-item">
+  <select id="consecutive-service" name="consecutive_service" 
+    alt="Select the length of your longest actice duty tour" 
+    class="filter-item dynamic-changer">
     <% {
       '0.8' => '2+ years of consecutive service: 80%', '0.6' => '1+ year of consecutive service: 60%', 
       '0.4' => '90+ days of consecutive service: 40%'
@@ -138,7 +147,8 @@
     <label for="elig-for-post-gi-bill">Are you eligible for the Post-9/11 GI Bill?</label>
   <% end %>
 
-  <select id="elig-for-post-gi-bill" name="elig_for_post_gi_bill" alt="Eligible for Post 9/11 GI Bill?" class="filter-item">
+  <select id="elig-for-post-gi-bill" name="elig_for_post_gi_bill" 
+    alt="Eligible for Post 9/11 GI Bill?" class="filter-item dynamic-changer">
     <% { 
       'yes' => 'Eligilble for Post-9/11 Gi Bill', 'no' => 'Not Eligilble for Post-9/11 Gi Bill'
     }.each_pair do |value, label| %>
@@ -154,7 +164,8 @@
     <label for="number-of-dependents">Number of Dependents </label>
   <% end %>
 
-  <select id="number-of-dependents" name="number_of_dependents" alt="Select the number of dependents you have" class="filter-item">
+  <select id="number-of-dependents" name="number_of_dependents" 
+    alt="Select the number of dependents you have" class="filter-item dynamic-changer">
     <% { 
       '0' => '0 Dependents', '1' => '1 Dependent', '2' => '2 Dependents',
       '3' => '3 Dependents', '4' => '4 Dependents', '5' => '5 Dependents'
@@ -174,7 +185,8 @@
 <!-- On the home page, its part of the school search section -->
 <% if !use_label %>
   <div id="online-classes-form" class="form-group">
-    <select id="online-classes" name="online_classes" alt="Online? Yes/No" class="filter-item">
+    <select id="online-classes" name="online_classes" alt="Online? Yes/No" 
+      class="filter-item dynamic-changer">
       <% { 
         'yes' => 'All Online', 'no' => 'None Online', 'both' => 'Both online and on-campus'
       }.each_pair do |value, label| %>
@@ -186,6 +198,7 @@
   </div>
 <% end %>
 </div><!--End Row-->
+
 <!-- Military Status Modal -->
 <div id="militaryStatus" class="modal-style" style="display: none; position: fixed; opacity: 1; z-index: 11000; left: 50%; margin-left: -202px; top: 200px;">
   <div>

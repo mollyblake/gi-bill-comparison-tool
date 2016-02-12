@@ -1,15 +1,18 @@
 <% count_all = @kilter.count_all %>
 
 <div class="row">
+	<input name="source" type="hidden" value="<%= source %>" class="filter" />
+	<input name="page" type="hidden" value="<%= page.to_s %>" class="filter" />
+
 	<div class="small-12 columns filter-box">
-	<%
-		type_name = @inputs[:type_name] || "all"
-		count_ojt = @kilter.count(:name)[Institution::EMPLOYER]
+		<%
+			type_name = @inputs[:type_name] || "all"
+			count_ojt = @kilter.count(:name)[Institution::EMPLOYER]
 		
-		count_school = InstitutionType.where.not(name: Institution::EMPLOYER).inject(0) do |memo, it|
-			memo += @kilter.count(:name)[it.name]
-		end
-	%>
+			count_school = InstitutionType.where.not(name: Institution::EMPLOYER).inject(0) do |memo, it|
+				memo += @kilter.count(:name)[it.name]
+			end
+		%>
 		<p>Institution</p>
 
 		<p class="filter-p">

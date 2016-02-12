@@ -19,7 +19,7 @@
     <div class="action-bar">
       <div class="row">
         <div class="small-10 medium-10 columns filter-horizontal" id="horiz-filters-noprint2">
-          <%= render partial: 'yourself', locals: {use_label: false} %>
+          <%= render partial: 'yourself', locals: { use_label: false } %>
         </div>
         <div class="medium-2 columns">
           <a href="<%= root_path %>" class="button filter-button">Reset Search</a>
@@ -36,7 +36,7 @@
               <div id="panel-filters" class="content">           
                 <div id="search-filters">
                   <div class="usa-card-content">      
-                    <%= render partial: 'filter' %>
+                    <%= render partial: 'filter', locals: { source: "search", page: @kilter.page_number } %>
                   </div>
                 </div>   
               </div>
