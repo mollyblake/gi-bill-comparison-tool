@@ -51,42 +51,42 @@ class InstitutionsController < ApplicationController
       .track(:yr).track(:poe).track(:eight_keys)
 
     # Institution types are "all", "employer" (ojt), "school" (!ojt)
-    if @inputs[:type_name].present? && @inputs[:type_name] != "all"
+    if @inputs[:type_name] != "all"
       @kilter.add(:name, Institution::EMPLOYER, @inputs[:type_name] == "school" ? "!=" : "=")
     end
 
     # States are "all", or distinct states in the rset
-    if @inputs[:state].present? && @inputs[:state] != "all"
+    if @inputs[:state] != "all"
       @kilter.add(:state, @inputs[:state]) 
     end
 
     # Countries are "all", or distinct countries in the rset
-    if @inputs[:country].present? && @inputs[:country] != "all"
+    if @inputs[:country] != "all"
       @kilter.add(:country, @inputs[:country]) 
     end
 
     # Student veterans groups are nil or boolean text values
-    if @inputs[:student_veteran_group].present?
-      @kilter.add(:student_veteran, Institution.to_bool(@inputs[:student_veteran_group]))
+    if @inputs[:student_veteran].present?
+      @kilter.add(:student_veteran, Institution.to_bool(@inputs[:student_veteran]))
     end
 
     # Yellow ribbon scholarships are nil or boolean text values
-    if @inputs[:yellow_ribbon_scholarship].present?
-      @kilter.add(:yr, Institution.to_bool(@inputs[:yellow_ribbon_scholarship]))
+    if @inputs[:yr].present?
+      @kilter.add(:yr, Institution.to_bool(@inputs[:yr]))
     end
 
     # Principles of excellence are nil or boolean text values
-    if @inputs[:principles_of_excellence].present?
-      @kilter.add(:poe, Institution.to_bool(@inputs[:principles_of_excellence]))
+    if @inputs[:poe].present?
+      @kilter.add(:poe, Institution.to_bool(@inputs[:poe]))
     end
 
     # 8 keys to veterans success are nil or boolean text values
-    if @inputs[:f8_keys_to_veteran_success].present?
-      @kilter.add(:eight_keys, Institution.to_bool(@inputs[:f8_keys_to_veteran_success]))
+    if @inputs[:eight_keys].present?
+      @kilter.add(:eight_keys, Institution.to_bool(@inputs[:eight_keys]))
     end
 
     # Types may be "all", or distinct institution types
-    if @inputs[:types].present? && @inputs[:type_name] != "all"
+    if @inputs[:types] != "all"
       @kilter.add(:name, @inputs[:types])
     end
 
@@ -128,14 +128,14 @@ class InstitutionsController < ApplicationController
     # Search parameters
     @inputs[:source] = params[:source].try(:downcase)
     @inputs[:institution_search] = params[:institution_search]
-    @inputs[:type_name] = params[:type_name].try(:downcase)
-    @inputs[:state] = params[:state].try(:downcase)
-    @inputs[:country] = params[:country].try(:downcase)
-    @inputs[:student_veteran_group] = params[:student_veteran_group].try(:downcase)
-    @inputs[:yellow_ribbon_scholarship] = params[:yellow_ribbon_scholarship].try(:downcase)
-    @inputs[:principles_of_excellence] = params[:principles_of_excellence].try(:downcase)
-    @inputs[:f8_keys_to_veteran_success] = params[:f8_keys_to_veteran_success].try(:downcase)
-    @inputs[:types] = params[:types].try(:downcase)
+    @inputs[:type_name] = params[:institution_type].try(:downcase) || 'all'
+    @inputs[:state] = params[:state].try(:downcase) || 'all'
+    @inputs[:country] = params[:country].try(:downcase) || 'all'
+    @inputs[:student_veteran] = params[:student_veteran].try(:downcase)
+    @inputs[:yr] = params[:yr].try(:downcase)
+    @inputs[:poe] = params[:poe].try(:downcase)
+    @inputs[:eight_keys] = params[:eight_keys].try(:downcase)
+    @inputs[:types] = params[:types].try(:downcase) || 'all'
 
     # Pagination - do not put in inputs
     @page = params[:page].try(:to_i) || 1

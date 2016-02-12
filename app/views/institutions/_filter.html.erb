@@ -1,118 +1,102 @@
 <% count_all = @kilter.count_all %>
 
 <div class="row">
-	<input name="source" type="hidden" value="<%= source %>" class="filter" />
-	<input name="page" type="hidden" value="<%= page.to_s %>" class="filter" />
+	<input name="source" type="hidden" value="<%= @inputs[:source] %>" class="filter" />
+	<input name="institution_search" type="hidden" value="<%= @inputs[:institution_search] %>" class="filter" %>
 
 	<div class="small-12 columns filter-box">
 		<%
-			type_name = @inputs[:type_name] || "all"
-			count_ojt = @kilter.count(:name)[Institution::EMPLOYER]
-		
-			count_school = InstitutionType.where.not(name: Institution::EMPLOYER).inject(0) do |memo, it|
-				memo += @kilter.count(:name)[it.name]
-			end
+			type_name = @inputs[:type_name]
+			count_employer = @kilter.count(:name)[Institution::EMPLOYER]
+			count_school = @kilter.count(:name).keys
+				.reject { |k| compare_downcase(k, Institution::EMPLOYER) }
+				.inject(0) { |memo, k| memo += @kilter.count(:name)[k] }
 		%>
+
 		<p>Institution</p>
+		<%= render partial: "as_choice", 
+				locals: {
+					itype: "radio", name: "institution_type", label: "All",
+					value: "all", checked_if: type_name, count: count_all
+				} 
+		%>
 
-		<p class="filter-p">
-			<input type="radio" id="all-school" name="institution_type" class="filter" value="all" 
-				<%= "checked" if type_name == "all" %> 
-			/>
-			<label id="all-school-label" for="all-school">All (<%= count_all %>)</label>
-		</p>
+		<%= render partial: "as_choice", 
+				locals: {
+					itype: "radio", name: "institution_type", label: "School",
+					value: "school", checked_if: type_name, count: count_school
+				} 
+		%>
 
-		<p class="filter-p">
-			<input type="radio" id="school" name="institution_type" 
-        class="filter" value="school" 
-        <%= 'checked' if type_name == "school" %>
-      />
-			<label id="school-label" for="school">School (<%= count_school %>)</label>
-		</p>
-
-		<p class="filter-p">
-			<input type="radio" id="employer" name="institution_type" 
-				class="filter" value="employer" <%= 'checked' if type_name == "employer" %>
-			/>
-      <label id="employer-label" for="employer">Employer (<%= count_ojt %>)</label>
-    </p>
+		<%= render partial: "as_choice", 
+				locals: {
+					itype: "radio", name: "institution_type", label: "Employer",
+					value: "employer", checked_if: type_name, count: count_employer
+				} 
+		%>
 	</div><!-- end institution section -->
 
 	<div class="small-12 columns filter-box">
 		<p>Location</p>
+		<%= render partial: "as_select", 
+				locals: {
+					name: "state", label: "State:", checked_if: @inputs[:state],
+					values: {"all" => count_all}.merge(@kilter.count(:state))
+				} 
+		%>
 
-		<label for="state">State: </label>
-		<select id="states" name="state" class="filter">
-			<option value="all" selected>All (<%= count_all %>)</option>
-			<% @kilter.count(:state).each_pair do |state, count| %>
-				<option id="filters-<%= state %>" value="<%= state %>" <%= 'selected' if compare_downcase(@inputs[:state], state) %>>
-          <%= state.upcase %> (<%= count %>)
-				</option>
-			<% end %>
-		</select>
-
-		<label for="country">Country: </label>
-		<select id="countries" name="country" class="filter">
-			<option value="all" selected>All (<%= count_all %>)</option>
-			<% @kilter.count(:country).each_pair do |country, count| %>
-				<option id="filters-<%= country %>" value="<%= country %>" <%= 'selected' if compare_downcase(@inputs[:country], country) %>>
-          <%= country.upcase %> (<%= count %>)
-				</option>
-			<% end %>
-		</select>
+		<%= render partial: "as_select", 
+				locals: {
+					name: "country", label: "Country:", checked_if: @inputs[:country],
+					values: {"all" => count_all}.merge(@kilter.count(:country))
+				} 
+		%>
 	</div><!-- end location section -->
 
 	<div class="small-12 columns filter-box">
 		<p>School Features</p>
 
-		<p class="filter-p">
-			<input type="checkbox" id="student-veteran" name="student_veteran" 
-				class="filter" value="true" <%= 'checked' if @inputs[:student_veteran_group].present? %>
-			/>
-      <label id="student-veteran-label" for="student-veteran">
-      	Student Vet Group (<%= @kilter.count(:student_veteran)["true"] %>)
-      </label>
-    </p>
+		<%= render partial: "as_choice", 
+			locals: {
+				itype: "checkbox", name: "student_veteran", label: "Student Vet Group",
+				value: "true", checked_if: @inputs[:student_veteran].present? ? "true" : nil, 
+				count: @kilter.count(:student_veteran)["true"]
+			} 
+		%>
 
-		<p class="filter-p">
-			<input type="checkbox" id="yr" name="yr" 
-				class="filter" value="true" <%= 'checked' if @inputs[:yellow_ribbon_scholarship].present? %>
-			/>
-    	<label id="yr-label" for="yr">
-    		Yellow Ribbon (<%= @kilter.count(:yr)["true"] %>)
-    	</label>
-   	</p>
+		<%= render partial: "as_choice", 
+			locals: {
+				itype: "checkbox", name: "yr", label: "Yellow Ribbon",
+				value: "true", checked_if: @inputs[:yr].present? ? "true" : nil, 
+				count: @kilter.count(:yr)["true"]
+			} 
+		%>
 
-		<p class="filter-p">
-			<input type="checkbox" id="poe" name="poe" 
-				class="filter" value="true" <%= 'checked' if @inputs[:principles_of_excellence].present? %>
-			/>
-      <label id="poe-label" for="poe">
-      	Principles of Excellence (<%= @kilter.count(:poe)["true"] %>)
-      </label>
-     </p>
+		<%= render partial: "as_choice", 
+			locals: {
+				itype: "checkbox", name: "poe", label: "Principles of Excellence",
+				value: "true", checked_if: @inputs[:poe].present? ? "true" : nil, 
+				count: @kilter.count(:poe)["true"]
+			} 
+		%>
 
-		<p class="filter-p">
-			<input type="checkbox" id="eight-keys" name="eight_keys" 
-				class="filter" value="true" <%= 'checked' if @inputs[:f8_keys_to_veteran_success].present? %>
-			/>
-      <label id="eight-keys-label" for="eight-keys">
-      	8 Keys to Vet Success (<%= @kilter.count(:eight_keys)["true"] %>)
-      </label>
-    </p>
+		<%= render partial: "as_choice", 
+			locals: {
+				itype: "checkbox", name: "eight_keys", label: "8 Keys to Vet Success",
+				value: "true", checked_if: @inputs[:eight_keys].present? ? "true" : nil, 
+				count: @kilter.count(:eight_keys)["true"]
+			} 
+		%>
 	</div><!-- end features section -->
 
 	<div class="small-12 columns filter-box">
 		<p>Types of Schools</p>
 
-		<select id="types" name="types" class="filter">
-			<option value="all" selected>All (<%= count_all %>)</option>
-			<% @kilter.count(:name).each_pair do |itype, count| %>
-				<option id="filters-<%= itype %>" value="<%= itype %>" <%= 'selected' if compare_downcase(@inputs[:types], itype) %>>
-          <%= itype.upcase %> (<%= count %>)
-				</option>
-			<% end %>
-		</select>
+		<%= render partial: "as_select", 
+				locals: {
+					name: "types", checked_if: @inputs[:types], label: "",
+					values: {"all" => count_all}.merge(@kilter.count(:name))
+				} 
+		%>
 	</div><!-- end school types section -->
-
 </div><!--end row-->

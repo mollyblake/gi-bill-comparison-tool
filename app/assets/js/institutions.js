@@ -12,10 +12,10 @@ var showDependent = function(source, value, dependent, delay) {
 /////////////////////////////////////////////////////////////////////////////
 // formProfileUrl
 /////////////////////////////////////////////////////////////////////////////
-var formProfileUrl = function(id) {
-	url = "<%= profile_path %>?id=" + id;
-	url += "&military_status=" + $("military-status").val();
-}
+// var formProfileUrl = function(id) {
+// 	url = "<%= profile_path %>?id=" + id;
+// 	url += "&military_status=" + $("military-status").val();
+// }
 
 /////////////////////////////////////////////////////////////////////////////
 // runEstimator
