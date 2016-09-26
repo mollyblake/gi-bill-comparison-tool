@@ -20,15 +20,23 @@ class InstitutionsController < ApplicationController
     params_to_inputs
 
     @school = Institution.find_by(facility_code: params[:facility_code])
+    render_404 and return if @school.nil?
     @kilter = Kilter.new(Institution.none)
-
+ 
     @back_url = @kilter.to_href(search_page_path, @inputs, page: @page)
-    @veteran_retention_rate = @school.get_veteran_retention_rate
-    @all_student_retention_rate = @school.get_all_student_retention_rate
+    @veteran_retention_rate = @school.try(:get_veteran_retention_rate)
+    @all_student_retention_rate = @school.try(:get_all_student_retention_rate)
 
     respond_to do |format|
       format.json { render json: @school }
       format.html
+    end
+  end
+
+  def render_404
+    respond_to do |format|
+      format.html { render text: 'Institution Not Found', status: 404 }
+      format.all { render nothing: true, status: 404 }
     end
   end
 
