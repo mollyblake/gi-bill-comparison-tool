@@ -129,7 +129,7 @@ class Institution < ActiveRecord::Base
   ## different facility codes.
   #############################################################################
   def self.search(search_term)
-    if search_term.empty?
+    if search_term.blank?
       @rset = Institution.with_type
     else
       search_term = search_term.to_s.downcase
